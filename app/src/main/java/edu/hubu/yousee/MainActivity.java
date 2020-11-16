@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -29,7 +30,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Fragment mTab1 = new connectFragment();
     private Fragment mTab2 = new fineFragment();
     private Fragment mTab3 = new settingFragment();
-   //   private Fragment m0 = new yousee0Fragment();
     private FragmentManager fm;
 
 
@@ -48,12 +48,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void initFragment() {
         fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.add(R.id.id_content,m0);
-//        transaction.add();m0
-//          transaction.add(R.id.id_content,mTab0,null);
-//        transaction.add(R.id.id_content,mTab1,null);
-//        transaction.add(R.id.id_content,mTab2,null);
-//        transaction.add(R.id.id_content,mTab3,null);
         transaction.add(R.id.id_content,mTab0);
         transaction.add(R.id.id_content,mTab1);
         transaction.add(R.id.id_content,mTab2);
@@ -88,22 +82,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case 0:
                 //log.d("setSelect","2");yousee
                 transaction.show(mTab0);
-                mImageYouSee.setImageResource(R.drawable.icon_font_setting_press);
+                mImageYouSee.setImageResource(R.drawable.eyeopen_);
                 break;
             case 1:
                 //log.d("setSelect","3");connect
                 transaction.show(mTab1);
-                mImageConnect.setImageResource(R.drawable.tab_address_pressed);
+                mImageConnect.setImageResource(R.drawable.connect);
                 break;
             case 2:
                 //log.d("setSelect","2");fine
                 transaction.show(mTab2);
-                mImageFine.setImageResource(R.drawable.icon_font_fine_press);
+                mImageFine.setImageResource(R.drawable.music_);
                 break;
             case 3:
                 //log.d("setSelect","3");setting
                 transaction.show(mTab3);
-                mImageSetting.setImageResource(R.drawable.tab_settings_pressed);
+                mImageSetting.setImageResource(R.drawable.setting_);
                 break;
             default:
                 break;
@@ -142,9 +136,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public void resetimg(){
-        mImageYouSee.setImageResource(R.drawable.icon_font_yousee);
-        mImageConnect.setImageResource(R.drawable.tab_find_frd_normal);
-        mImageFine.setImageResource(R.drawable.icon_font_fine);
-        mImageSetting.setImageResource(R.drawable.tab_settings_normal);
+        mImageYouSee.setImageResource(R.drawable.eyeopen);
+        mImageConnect.setImageResource(R.drawable.connect_);
+        mImageFine.setImageResource(R.drawable.music);
+        mImageSetting.setImageResource(R.drawable.setting);
     }
+
 }
