@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<RelativeLayout
+    android:id="@+id/rl_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#47B8C6">
+    <TextView
+        android:id="@+id/tv_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="main"
+        android:textStyle="bold"
+        android:textColor="#8C143C"
+        android:textSize="40sp" />
+</RelativeLayout>
+
+<RelativeLayout
+    android:id="@+id/rl_child"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="#C17873"
+    android:visibility="gone">
+    <TextView
+        android:id="@+id/tv_team_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="unmain"
+        android:textColor="#5C0F09"
+        android:textSize="28sp" />
+</RelativeLayout>
+</LinearLayout>

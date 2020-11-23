@@ -1,11 +1,17 @@
 package edu.hubu.yousee;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -13,6 +19,8 @@ import android.app.Fragment;
  * create an instance of this fragment.
  */
 public class connectFragment extends Fragment {
+
+    private List<String> mlist = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,8 +44,8 @@ public class connectFragment extends Fragment {
      * @return A new instance of fragment youseeFragment.
      */
 //    // TODO: Rename and change types and number of parameters
-//    public static connectFragment newInstance(String param1, String param2) {
-//        connectFragment fragment = new connectFragment();
+//    public static settingFragment newInstance(String param1, String param2) {
+//        settingFragment fragment = new settingFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -58,6 +66,27 @@ public class connectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.demo02, container, false);
+        View view = inflater.inflate(R.layout.demo02, container, false);
+        adapter myadapter = new adapter(getActivity());
+        RecyclerView rcvExpandCollapse = view.findViewById(R.id.rcv_expandcollapse);
+
+        rcvExpandCollapse.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcvExpandCollapse.setHasFixedSize(true);
+        rcvExpandCollapse.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        rcvExpandCollapse.setAdapter(myadapter);
+
+        myadapter.setExpandCollapseDataList(mlist);
+
+        initview();
+        return view;
+    }
+
+    private void initview(){
+        mlist.add("police");
+        mlist.add("doctor");
+        mlist.add("teacher");
+        mlist.add("guider");
+        mlist.add("firehouse");
+        mlist.add("office");
     }
 }
