@@ -3,6 +3,9 @@ package edu.hubu.yousee;
 import android.app.Fragment;
 
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 
@@ -13,15 +16,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link youseeFragment#newInstance} factory method to
@@ -39,6 +52,8 @@ public class youseeFragment extends Fragment implements View.OnClickListener {
     private EditText et_price;
 
     private  String selId=null;  //选择项id
+    Button button1,button2,button3;
+    ImageView imageView;
 
 
 //    // TODO: Rename parameter arguments, choose names that match
@@ -90,6 +105,11 @@ public class youseeFragment extends Fragment implements View.OnClickListener {
         Button bt_modify=(Button) view.findViewById(R.id.bt_modify);bt_modify.setOnClickListener(this);
         Button bt_del=(Button) view.findViewById(R.id.bt_del);bt_del.setOnClickListener(this);
 
+        button1=view.findViewById(R.id.bt_click1);
+        button2=view.findViewById(R.id.bt_click2);
+        button3=view.findViewById(R.id.bt_click3);
+        imageView=view.findViewById(R.id.imageView);
+
         et_name=(EditText) view.findViewById(R.id.et_name);
         et_price=(EditText) view.findViewById(R.id.et_price);
 
@@ -100,6 +120,30 @@ public class youseeFragment extends Fragment implements View.OnClickListener {
         }
 
         displayRecords();   //显示记录
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testGet1();
+
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testPost();
+
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testpng();
+            }
+        });
+
         return view;
     }
 
@@ -136,7 +180,8 @@ public class youseeFragment extends Fragment implements View.OnClickListener {
         });
     }
     @Override
-    public void onClick(View v) {  //实现的接口方法
+    public void onClick(View v) {
+        //实现的接口方法
         if(selId!=null) {  //选择了列表项后，可以增加/删除/修改
             String p1 = et_name.getText().toString().trim();
             int p2 = Integer.parseInt(et_price.getText().toString());
@@ -168,4 +213,99 @@ public class youseeFragment extends Fragment implements View.OnClickListener {
         }
         displayRecords();//刷新ListView对象
     }
+
+    public void testGet1(){
+        //创建OkHttpClient实例对象
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //创建Request对象
+        Request request = new Request.Builder()
+                .url("https://ss1.bdstatic.com/get?id=111")
+                .addHeader("key","value")
+                .get()
+                .build();
+        //执行Request请求
+        //异步请求
+        okHttpClient.newCall(request).enqueue(new Callback() {
+
+            public void onFailure(Call call, IOException e) {
+                //请求失败
+            }
+
+            public void onResponse(Call call, Response response) throws IOException {
+                //请求成功
+                Log.d("TestOkHttp",response.body().string());
+            }
+        });
+        //同步请求
+        /*
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+
+    public void testPost(){
+        //1、创建OkHttpClient对象实例
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //2、创建Request对象
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType,"{}");
+        Request request = new Request.Builder()
+                .url("https://ss1.bdstatic.com/post")
+                .post(requestBody)
+                .build();
+        //3、执行Request请求
+        okHttpClient.newCall(request).enqueue(new Callback() {
+
+            public void onFailure(Call call, IOException e) {
+                //请求失败
+            }
+
+            public void onResponse(Call call, Response response) throws IOException {
+                //请求成功
+                Log.d("TestOkHttpPost",response.body().string());
+            }
+        });
+
+    }
+
+    public void testpng(){
+        //1、创建OkHttpClient对象实例
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //2、创建Request对象
+        MediaType mediaType = MediaType.parse("image/jpg; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType,"{}");
+        Request request = new Request.Builder()
+                .url("https://wx4.sinaimg.cn/mw690/001SzPzIgy1glzedgyt97j611i1e0qmd02.jpg")
+                .get()
+                .build();
+        //3、执行Request请求
+        okHttpClient.newCall(request).enqueue(new Callback() {
+
+            public void onFailure(Call call, IOException e) {
+                //请求失败
+            }
+
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                final MediaType contenttype = response.body().contentType();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Drawable drawable = Drawable.createFromStream(response.body().byteStream(),"image.png");
+                        drawable.setBounds(0,0,1000,1000);
+                        imageView.setImageDrawable(drawable);
+                    }
+                });
+
+                //请求成功
+
+            }
+        });
+
+    }
+
 }
